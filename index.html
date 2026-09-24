@@ -7,9 +7,9 @@
   <title>MotoTrack Pro</title>
 
   <!-- Typography -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- PDF Generation Engine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -67,7 +67,6 @@
       align-items: start;
     }
 
-    /* Mobile Garage Switcher Bar */
     .mobile-garage-bar {
       display: none;
       background: var(--card-bg);
@@ -80,7 +79,6 @@
       width: 100%;
     }
 
-    /* Sidebar / Drawer */
     .sidebar {
       background: var(--card-bg);
       backdrop-filter: blur(14px);
@@ -140,7 +138,6 @@
       background: rgba(255, 255, 255, 0.08); color: var(--text-muted);
     }
 
-    /* Main Content Area */
     .main-content { 
       display: flex; 
       flex-direction: column; 
@@ -190,7 +187,6 @@
     .btn-secondary { background: rgba(255, 255, 255, 0.07); color: #fff; border-color: rgba(255, 255, 255, 0.1); }
     .btn-danger-text { background: transparent; color: var(--danger); border: none; font-size: 0.8rem; cursor: pointer; padding: 6px; }
 
-    /* Card */
     .card {
       background: var(--card-bg); backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -201,7 +197,6 @@
     .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
     .card-title { font-size: 0.92rem; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
-    /* Highlights Grid */
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .stat-card {
       background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
@@ -211,7 +206,6 @@
     .stat-value { font-size: 1.15rem; font-weight: 800; color: #fff; }
     .stat-value small { font-size: 0.68rem; color: var(--text-muted); font-weight: 600; }
 
-    /* Quick Estimator Card */
     .estimator-box {
       border: 1px dashed rgba(59, 130, 246, 0.35);
       background: rgba(59, 130, 246, 0.04);
@@ -232,7 +226,6 @@
       text-align: center;
     }
 
-    /* Maintenance Monitor */
     .progress-track { width: 100%; height: 10px; background: rgba(255, 255, 255, 0.08); border-radius: 8px; overflow: hidden; margin: 10px 0; }
     .progress-fill { height: 100%; width: 0%; border-radius: 8px; background: var(--accent-green); transition: width 0.3s; }
     .progress-labels { display: flex; justify-content: space-between; font-size: 0.76rem; color: var(--text-muted); }
@@ -240,7 +233,6 @@
     .alert-banner.warn { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #fcd34d; display: block; }
     .alert-banner.danger { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; display: block; }
 
-    /* Form Fields */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .form-group { display: flex; flex-direction: column; gap: 4px; }
     .form-group.full { grid-column: span 2; }
@@ -256,7 +248,6 @@
       border-radius: 8px; font-size: 0.92rem; font-weight: 700; cursor: pointer; min-height: 46px;
     }
 
-    /* Tables */
     .table-wrap { 
       overflow-x: auto; 
       margin-top: 8px; 
@@ -271,7 +262,6 @@
     .del-btn:hover { color: var(--danger); }
     .empty { text-align: center; color: var(--text-muted); padding: 16px 0; font-size: 0.82rem; }
 
-    /* Modal */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82);
       backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -310,18 +300,14 @@
 
   <div class="app-layout">
     
-    <!-- Mobile Garage Switcher Bar -->
     <div class="mobile-garage-bar">
       <div>
         <div style="font-size:0.72rem; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Active Garage Vehicle</div>
         <div id="mobileActiveName" style="font-size:0.95rem; font-weight:700; color:#fff;">Primary Bike</div>
       </div>
-      <button class="btn btn-secondary" id="toggleDrawerBtn" style="min-height:36px; padding:6px 12px; font-size:0.75rem;">
-        📂 Switch Vehicle
-      </button>
+      <button class="btn btn-secondary" id="toggleDrawerBtn" style="min-height:36px; padding:6px 12px; font-size:0.75rem;">📂 Switch Vehicle</button>
     </div>
 
-    <!-- Sidebar: Vehicles List -->
     <aside class="sidebar" id="sidebarDrawer">
       <div class="sidebar-header">
         <h2 style="font-size: 0.95rem; font-weight: 700; color:#fff;">Garage Vehicles</h2>
@@ -336,10 +322,8 @@
       </div>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="main-content">
       
-      <!-- Header -->
       <header class="header">
         <div class="brand">
           <div class="brand-icon" id="brandIcon">🏍️</div>
@@ -354,7 +338,6 @@
         <button class="btn btn-secondary" id="exportPdfBtn">📄 Export PDF</button>
       </header>
 
-      <!-- Stats Grid -->
       <section class="card" style="padding: 12px;">
         <div class="stats-grid">
           <div class="stat-card">
@@ -372,7 +355,6 @@
         </div>
       </section>
 
-      <!-- REAL-TIME QUICK ESTIMATE -->
       <section class="card">
         <div class="card-header">
           <div class="card-title">
@@ -409,7 +391,7 @@
 
           <div class="estimator-result" id="estResultBox" style="display: none;">
             <div>
-              <div class="stat-label">Trip Since Last Full Refill</div>
+              <div class="stat-label">Trip Since Last Refill</div>
               <div class="stat-value" style="color:#93c5fd;" id="estTrip">-</div>
             </div>
             <div>
@@ -425,7 +407,6 @@
         </div>
       </section>
 
-      <!-- Oil / Service Maintenance -->
       <section class="card">
         <div class="card-header">
           <div class="card-title"><span id="serviceTitle">🛢️ Service Monitor</span></div>
@@ -439,7 +420,6 @@
         <div class="alert-banner" id="serviceBanner"></div>
       </section>
 
-      <!-- PUC Expiry Tracker -->
       <section class="card" id="pucSection">
         <div class="card-header">
           <div class="card-title"><span>🛡️ PUC Certificate Expiry</span></div>
@@ -456,7 +436,6 @@
         <div class="alert-banner" id="pucBanner"></div>
       </section>
 
-      <!-- Refill Form -->
       <section class="card">
         <div class="card-header">
           <div class="card-title"><span id="formTitle">⚡ Log Fuel Entry</span></div>
@@ -483,7 +462,6 @@
         </form>
       </section>
 
-      <!-- Monthly Summary -->
       <section class="card">
         <div class="card-header"><div class="card-title">📅 Monthly Summary</div></div>
         <div class="table-wrap">
@@ -503,7 +481,6 @@
         </div>
       </section>
 
-      <!-- Log History -->
       <section class="card">
         <div class="card-header">
           <div class="card-title">📋 Log History</div>
@@ -531,7 +508,6 @@
     </main>
   </div>
 
-  <!-- Add Vehicle Modal -->
   <div class="modal-overlay" id="vehicleModal">
     <div class="modal">
       <h3 style="color:#fff; font-size:1.1rem;">+ Add New Vehicle</h3>
@@ -573,9 +549,7 @@
   </div>
 
   <script>
-    // =========================================================================
-    // 1. LIVE CONFIGURED FIREBASE CONFIG
-    // =========================================================================
+    // 1. FIREBASE CONFIG
     const firebaseConfig = {
       apiKey: "AIzaSyAk1_bwodoWHXiruTgcpGg0S-2qDim7Gnk",
       authDomain: "vehitrack-11aec.firebaseapp.com",
@@ -600,7 +574,6 @@
       cloudStatusEl.classList.add("offline");
     }
 
-    // SYSTEM DATE UTILITY
     function getSystemLocalDateStr(offsetMonths = 0, offsetYears = 0) {
       const now = new Date();
       if (offsetMonths !== 0) now.setMonth(now.getMonth() + offsetMonths);
@@ -636,7 +609,7 @@
     });
 
     // 2. STATE & ARCHITECTURE
-    const STORAGE_KEY = "mototrack_v10_store";
+    const STORAGE_KEY = "mototrack_v12_store";
     const defaultData = {
       activeId: "v_1",
       vehicles: [
@@ -649,7 +622,7 @@
           pucExpiryDate: "",
           serviceConfig: { lastServiceKm: 0, intervalKm: 2500 },
           logs: [
-            { date: getSystemLocalDateStr(), odometer: 0, qty: 0, amount: 0, isBaseline: true }
+            { date: getSystemLocalDateStr(), odometer: 0, qty: 0, amount: 0 }
           ]
         }
       ]
@@ -668,6 +641,7 @@
 
     function saveState() {
       const active = getActive();
+      // Always sort logs by odometer ascending
       active.logs.sort((a, b) => a.odometer - b.odometer);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       
@@ -789,12 +763,14 @@
       const active = getActive();
       const isEV = active.type === "ev";
       const is2W = active.wheels !== "4w";
+      
+      // Auto-sort logs by odometer before calculating
+      active.logs.sort((a, b) => a.odometer - b.odometer);
       const logs = active.logs || [];
 
       displayActiveName.textContent = active.name;
       mobileActiveName.textContent = `${active.name} (${active.type === 'ev' ? 'EV' : 'Petrol'})`;
 
-      // Render Sidebar Vehicles
       vehicleSidebarList.innerHTML = "";
       state.vehicles.forEach(v => {
         const item = document.createElement("div");
@@ -826,7 +802,6 @@
         vehicleSidebarList.appendChild(item);
       });
 
-      // Dynamic Theme & Units
       const effUnit = isEV ? "km/kWh" : "km/L";
       const volUnit = isEV ? "kWh" : "L";
 
@@ -854,7 +829,6 @@
       thLogEff.textContent = effUnit;
       logCounter.textContent = `${logs.length} Records`;
 
-      // PUC Tracker
       if (isEV) {
         pucSection.style.display = "none";
       } else {
@@ -862,7 +836,7 @@
         renderPucStatus(active.pucExpiryDate);
       }
 
-      // Calculations
+      // ACCURATE CHRONOLOGICAL CALCULATIONS
       let totalDist = 0, totalQty = 0, totalAmount = 0, lastEff = 0;
       const monthlyBuckets = {};
 
@@ -873,23 +847,31 @@
         let effDisplay = "-";
         let tripDisplay = "-";
 
-        if (item.isBaseline) {
+        // FIRST ENTRY IS DYNAMICALLY THE BASELINE
+        if (index === 0) {
           tripDisplay = "Baseline";
           effDisplay = `<span class="tag" style="background:rgba(255,255,255,0.06); color:#94a3b8;">Start Odo</span>`;
-        } else if (index > 0) {
+        } else {
+          // ANY SUBSEQUENT ENTRY CALCULATES MILEAGE NORMALLY
           const prev = logs[index - 1];
           dist = item.odometer - prev.odometer;
-          const eff = item.qty > 0 ? (dist / item.qty) : 0;
-          tripDisplay = `${dist.toFixed(1)} km`;
-          effDisplay = `<span class="tag">${eff.toFixed(2)} ${effUnit}</span>`;
+          
+          if (dist > 0 && item.qty > 0) {
+            const eff = dist / item.qty;
+            tripDisplay = `${dist.toFixed(1)} km`;
+            effDisplay = `<span class="tag">${eff.toFixed(2)} ${effUnit}</span>`;
 
-          totalDist += dist;
-          totalQty += item.qty;
-          totalAmount += item.amount;
-          lastEff = eff;
-        }
+            totalDist += dist;
+            totalQty += item.qty;
+            lastEff = eff;
+          } else {
+            tripDisplay = `${dist.toFixed(1)} km`;
+            effDisplay = `<span class="tag" style="background:rgba(255,255,255,0.06); color:#94a3b8;">-</span>`;
+          }
 
-        if (!item.isBaseline) {
+          totalAmount += (item.amount || 0);
+
+          // Monthly aggregation
           const d = new Date(item.date);
           const mKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
           const mName = d.toLocaleDateString('default', { month: 'short', year: 'numeric' });
@@ -897,7 +879,7 @@
           if (!monthlyBuckets[mKey]) monthlyBuckets[mKey] = { name: mName, dist: 0, qty: 0, amount: 0 };
           monthlyBuckets[mKey].dist += dist;
           monthlyBuckets[mKey].qty += item.qty;
-          monthlyBuckets[mKey].amount += item.amount;
+          monthlyBuckets[mKey].amount += (item.amount || 0);
         }
 
         const tr = document.createElement("tr");
@@ -905,8 +887,8 @@
           <td>${item.date}</td>
           <td>${item.odometer}</td>
           <td>${tripDisplay}</td>
-          <td>${item.isBaseline ? '-' : item.qty.toFixed(2) + ' ' + volUnit}</td>
-          <td>${item.isBaseline ? '-' : '₹' + item.amount.toFixed(2)}</td>
+          <td>${index === 0 && item.qty === 0 ? '-' : (item.qty || 0).toFixed(2) + ' ' + volUnit}</td>
+          <td>${index === 0 && item.amount === 0 ? '-' : '₹' + (item.amount || 0).toFixed(2)}</td>
           <td>${effDisplay}</td>
           <td><button class="del-btn" onclick="deleteLogEntry(${index})" title="Delete">✕</button></td>
         `;
@@ -925,7 +907,6 @@
         statCost.innerHTML = `₹0.00 <small>/km</small>`;
       }
 
-      // Maintenance Status
       const latestOdo = logs.length > 0 ? logs[logs.length - 1].odometer : 0;
       fOdo.placeholder = `Last: ${latestOdo} km`;
       fOdoLabel.innerHTML = `Odometer (KM) <span style="font-size:0.68rem; color:#93c5fd;">(Last: ${latestOdo} km)</span>`;
@@ -952,7 +933,6 @@
         serviceBanner.className = "alert-banner";
       }
 
-      // Monthly Table
       monthlyTableBody.innerHTML = "";
       const mKeys = Object.keys(monthlyBuckets).sort().reverse();
       mKeys.forEach(k => {
@@ -1036,7 +1016,7 @@
 
       let histDist = 0, histFuel = 0;
       logs.forEach((item, idx) => {
-        if (!item.isBaseline && idx > 0) {
+        if (idx > 0) {
           histDist += (item.odometer - logs[idx - 1].odometer);
           histFuel += item.qty;
         }
@@ -1101,8 +1081,7 @@
         date: getSystemLocalDateStr(),
         odometer: initialOdo,
         qty: 0,
-        amount: 0,
-        isBaseline: true
+        amount: 0
       };
 
       state.vehicles.push({
@@ -1177,20 +1156,12 @@
       e.preventDefault();
       const active = getActive();
       const enteredOdo = parseFloat(fOdo.value);
-      const latestOdo = active.logs.length > 0 ? active.logs[active.logs.length - 1].odometer : 0;
-
-      if (enteredOdo < latestOdo) {
-        if (!confirm(`Warning: Entered odometer (${enteredOdo} km) is lower than previous recorded odometer (${latestOdo} km). Proceed?`)) {
-          return;
-        }
-      }
 
       active.logs.push({
         date: fDate.value || getSystemLocalDateStr(),
         odometer: enteredOdo,
         qty: parseFloat(fQty.value),
-        amount: parseFloat(fAmount.value),
-        isBaseline: false
+        amount: parseFloat(fAmount.value)
       });
 
       fOdo.value = "";
@@ -1231,7 +1202,6 @@
       }
     });
 
-    // PDF Export
     exportPdfBtn.addEventListener("click", () => {
       const active = getActive();
       const logs = active.logs;
@@ -1260,13 +1230,22 @@
 
       const rows = logs.map((item, idx) => {
         let dist = "-", eff = "-";
-        if (item.isBaseline) { dist = "Baseline"; eff = "Start Odo"; }
-        else if (idx > 0) {
+        if (idx === 0) { 
+          dist = "Baseline"; 
+          eff = "Start Odo"; 
+        } else {
           const d = item.odometer - logs[idx - 1].odometer;
           dist = `${d.toFixed(1)} km`;
           eff = item.qty > 0 ? `${(d / item.qty).toFixed(2)} ${effUnit}` : "-";
         }
-        return [item.date, `${item.odometer} km`, dist, item.isBaseline ? '-' : `${item.qty} ${volUnit}`, item.isBaseline ? '-' : `Rs. ${item.amount}`, eff];
+        return [
+          item.date, 
+          `${item.odometer} km`, 
+          dist, 
+          idx === 0 && item.qty === 0 ? '-' : `${item.qty} ${volUnit}`, 
+          idx === 0 && item.amount === 0 ? '-' : `Rs. ${item.amount}`, 
+          eff
+        ];
       });
 
       doc.autoTable({
