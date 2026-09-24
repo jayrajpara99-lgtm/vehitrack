@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0b0f19" />
   <title>MotoTrack Pro</title>
 
   <!-- Typography -->
@@ -21,7 +22,7 @@
   <style>
     :root {
       --bg: #0b0f19;
-      --card-bg: rgba(23, 30, 48, 0.75);
+      --card-bg: rgba(23, 30, 48, 0.85);
       --card-border: rgba(255, 255, 255, 0.08);
       --accent-blue: #3b82f6;
       --accent-green: #10b981;
@@ -35,7 +36,13 @@
       --radius: 14px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     body {
       background-color: var(--bg);
@@ -45,9 +52,10 @@
       background-attachment: fixed;
       color: var(--text);
       min-height: 100vh;
-      padding: 20px 16px 80px;
+      padding: 12px 10px 80px;
       display: flex;
       justify-content: center;
+      overflow-x: hidden;
     }
 
     .app-layout {
@@ -55,29 +63,44 @@
       max-width: 1080px;
       display: grid;
       grid-template-columns: 280px 1fr;
-      gap: 20px;
+      gap: 16px;
       align-items: start;
     }
 
-    /* Sidebar */
+    /* Mobile Garage Switcher Bar (Visible on Android/Mobile) */
+    .mobile-garage-bar {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    /* Sidebar / Drawer */
     .sidebar {
       background: var(--card-bg);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
-      padding: 18px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       position: sticky;
-      top: 20px;
+      top: 14px;
+      z-index: 50;
     }
 
     .sidebar-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 12px;
+      padding-bottom: 10px;
       border-bottom: 1px solid var(--card-border);
     }
 
@@ -85,7 +108,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      max-height: 70vh;
+      max-height: 60vh;
       overflow-y: auto;
     }
 
@@ -95,13 +118,11 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.06);
       cursor: pointer;
-      transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
 
-    .vehicle-item:hover { background: rgba(255, 255, 255, 0.07); }
     .vehicle-item.active {
       background: rgba(59, 130, 246, 0.15);
       border-color: rgba(59, 130, 246, 0.4);
@@ -112,29 +133,43 @@
     }
 
     .v-item-top { display: flex; justify-content: space-between; align-items: center; }
-    .v-item-name { font-weight: 700; font-size: 0.9rem; color: #fff; }
-    .v-item-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+    .v-item-name { font-weight: 700; font-size: 0.88rem; color: #fff; }
+    .v-item-meta { display: flex; gap: 5px; flex-wrap: wrap; }
     .chip {
       font-size: 0.68rem; padding: 2px 6px; border-radius: 4px; font-weight: 600;
       background: rgba(255, 255, 255, 0.08); color: var(--text-muted);
     }
 
-    /* Main Area */
-    .main-content { display: flex; flex-direction: column; gap: 18px; }
-    .header { display: flex; justify-content: space-between; align-items: center; }
-    .brand { display: flex; align-items: center; gap: 12px; }
+    /* Main Content Area */
+    .main-content { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 14px; 
+      width: 100%;
+      min-width: 0; /* Prevents flexbox children from bursting viewport width */
+    }
+
+    .header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .brand { display: flex; align-items: center; gap: 10px; }
     .brand-icon {
-      width: 44px; height: 44px; border-radius: 12px;
+      width: 42px; height: 42px; border-radius: 12px;
       background: var(--gradient-petrol);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.35rem; transition: background 0.3s ease;
+      font-size: 1.3rem; flex-shrink: 0;
     }
-    .brand-title { font-size: 1.35rem; font-weight: 800; }
-    .header-badges { display: flex; gap: 6px; align-items: center; margin-top: 4px; }
+    .brand-title { font-size: 1.25rem; font-weight: 800; }
+    .header-badges { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 3px; }
     
     .status-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-size: 0.72rem; padding: 3px 8px; border-radius: 12px;
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 0.7rem; padding: 3px 8px; border-radius: 12px;
       background: rgba(16, 185, 129, 0.15); color: #34d399;
       border: 1px solid rgba(16, 185, 129, 0.25);
     }
@@ -148,39 +183,40 @@
     }
 
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 10px 14px; border-radius: 10px; font-size: 0.85rem; font-weight: 600;
-      cursor: pointer; border: 1px solid transparent; transition: all 0.2s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 10px 14px; border-radius: 10px; font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; border: 1px solid transparent; min-height: 42px;
     }
     .btn-secondary { background: rgba(255, 255, 255, 0.07); color: #fff; border-color: rgba(255, 255, 255, 0.1); }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.14); }
-    .btn-danger-text { background: transparent; color: var(--danger); border: none; font-size: 0.8rem; cursor: pointer; }
+    .btn-danger-text { background: transparent; color: var(--danger); border: none; font-size: 0.8rem; cursor: pointer; padding: 6px; }
 
     /* Card */
     .card {
       background: var(--card-bg); backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--card-border); border-radius: var(--radius);
-      padding: 20px;
+      padding: 16px;
+      width: 100%;
     }
-    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .card-title { font-size: 0.95rem; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 8px; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+    .card-title { font-size: 0.92rem; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
     /* Highlights Grid */
-    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .stat-card {
       background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 12px; padding: 14px 10px; text-align: center;
+      border-radius: 10px; padding: 12px 6px; text-align: center;
     }
-    .stat-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
-    .stat-value { font-size: 1.3rem; font-weight: 800; color: #fff; }
-    .stat-value small { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
+    .stat-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .stat-value { font-size: 1.15rem; font-weight: 800; color: #fff; }
+    .stat-value small { font-size: 0.68rem; color: var(--text-muted); font-weight: 600; }
 
     /* Quick Estimator Card */
     .estimator-box {
       border: 1px dashed rgba(59, 130, 246, 0.35);
       background: rgba(59, 130, 246, 0.04);
       border-radius: 12px;
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -192,62 +228,93 @@
       padding: 12px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 8px;
       text-align: center;
     }
 
     /* Maintenance Monitor */
     .progress-track { width: 100%; height: 10px; background: rgba(255, 255, 255, 0.08); border-radius: 8px; overflow: hidden; margin: 10px 0; }
     .progress-fill { height: 100%; width: 0%; border-radius: 8px; background: var(--accent-green); transition: width 0.3s; }
-    .progress-labels { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); }
-    .alert-banner { padding: 10px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; margin-top: 10px; display: none; }
+    .progress-labels { display: flex; justify-content: space-between; font-size: 0.76rem; color: var(--text-muted); }
+    .alert-banner { padding: 10px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; margin-top: 10px; display: none; line-height: 1.4; }
     .alert-banner.warn { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #fcd34d; display: block; }
     .alert-banner.danger { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; display: block; }
 
-    /* Forms & Inputs */
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    /* Form Fields - Android touch tuned */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
     .form-group.full { grid-column: span 2; }
-    .form-group label { font-size: 0.76rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); }
+    .form-group label { font-size: 0.74rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); }
     .input-box {
-      background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 0.9rem; outline: none;
+      background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff; padding: 12px; border-radius: 8px; font-size: 0.95rem; outline: none;
+      min-height: 44px; /* Android touch standard */
     }
     .input-box:focus { border-color: var(--accent-blue); }
     .btn-submit {
       background: var(--gradient-petrol); color: #fff; border: none; padding: 12px;
-      border-radius: 8px; font-size: 0.92rem; font-weight: 700; cursor: pointer;
+      border-radius: 8px; font-size: 0.92rem; font-weight: 700; cursor: pointer; min-height: 46px;
     }
 
     /* Tables */
-    .table-wrap { overflow-x: auto; margin-top: 8px; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.82rem; }
-    th { padding: 9px 8px; color: var(--text-muted); font-size: 0.74rem; text-transform: uppercase; border-bottom: 1px solid var(--card-border); }
-    td { padding: 11px 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
-    .tag { display: inline-flex; padding: 2px 7px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; background: rgba(16, 185, 129, 0.15); color: #34d399; }
-    .del-btn { background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 0.95rem; }
+    .table-wrap { 
+      overflow-x: auto; 
+      margin-top: 8px; 
+      width: 100%;
+      -webkit-overflow-scrolling: touch;
+    }
+    table { width: 100%; min-width: 520px; border-collapse: collapse; text-align: left; font-size: 0.8rem; }
+    th { padding: 9px 6px; color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; border-bottom: 1px solid var(--card-border); }
+    td { padding: 11px 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+    .tag { display: inline-flex; padding: 2px 6px; border-radius: 5px; font-weight: 700; font-size: 0.72rem; background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .del-btn { background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 1rem; padding: 6px; }
     .del-btn:hover { color: var(--danger); }
-    .empty { text-align: center; color: var(--text-muted); padding: 20px 0; font-size: 0.85rem; }
+    .empty { text-align: center; color: var(--text-muted); padding: 16px 0; font-size: 0.82rem; }
 
     /* Modal */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center;
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center;
       padding: 16px; z-index: 100;
     }
     .modal-overlay.open { display: flex; }
     .modal {
       background: #111827; border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: var(--radius); padding: 22px; width: 100%; max-width: 440px;
-      display: flex; flex-direction: column; gap: 14px;
+      border-radius: var(--radius); padding: 18px; width: 100%; max-width: 440px;
+      display: flex; flex-direction: column; gap: 12px;
+      max-height: 90vh; overflow-y: auto;
     }
 
-    @media (max-width: 820px) {
-      .app-layout { grid-template-columns: 1fr; }
-      .sidebar { position: static; }
-      .stats-grid, .form-grid, .estimator-result { grid-template-columns: 1fr; }
+    /* Android Specific Media Queries */
+    @media (max-width: 768px) {
+      body { padding: 10px 8px 70px; }
+      .app-layout { grid-template-columns: 1fr; gap: 12px; }
+      
+      /* Display Garage Toggle Button on Android */
+      .mobile-garage-bar { display: flex; }
+      
+      /* Make sidebar an expandable drawer */
+      .sidebar {
+        display: none;
+        position: static;
+        width: 100%;
+      }
+      .sidebar.open {
+        display: flex;
+      }
+
+      .stats-grid { grid-template-columns: 1fr 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
       .form-group.full { grid-column: span 1; }
-      .header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .estimator-result { grid-template-columns: 1fr; }
+      .header { flex-direction: column; align-items: flex-start; }
+      .header button { width: 100%; }
+    }
+
+    @media (max-width: 420px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .stat-value { font-size: 1.25rem; }
     }
   </style>
 </head>
@@ -255,32 +322,43 @@
 
   <div class="app-layout">
     
-    <!-- Left Sidebar: Vehicles List -->
-    <aside class="sidebar">
+    <!-- Mobile Vehicle Toggle Bar (Taps open sidebar on Android) -->
+    <div class="mobile-garage-bar">
+      <div>
+        <div style="font-size:0.72rem; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Active Garage Vehicle</div>
+        <div id="mobileActiveName" style="font-size:0.95rem; font-weight:700; color:#fff;">Primary Bike</div>
+      </div>
+      <button class="btn btn-secondary" id="toggleDrawerBtn" style="min-height:36px; padding:6px 12px; font-size:0.75rem;">
+        📂 Switch Vehicle
+      </button>
+    </div>
+
+    <!-- Sidebar: Vehicles List -->
+    <aside class="sidebar" id="sidebarDrawer">
       <div class="sidebar-header">
-        <h2 style="font-size: 1rem; font-weight: 700; color:#fff;">Garage Vehicles</h2>
-        <button class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.75rem;" id="addVehicleBtn">+ Add</button>
+        <h2 style="font-size: 0.95rem; font-weight: 700; color:#fff;">Garage Vehicles</h2>
+        <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.72rem; min-height:32px;" id="addVehicleBtn">+ Add</button>
       </div>
 
       <div class="vehicle-list" id="vehicleSidebarList"></div>
 
-      <div style="display:flex; justify-content:space-between; gap:6px; margin-top:8px;">
-        <button class="btn btn-secondary" style="flex:1; padding:8px; font-size:0.78rem;" id="renameVehicleBtn">✏️ Edit Active</button>
-        <button class="btn btn-secondary" style="color:var(--danger); padding:8px; font-size:0.78rem;" id="delVehicleBtn">🗑️ Delete</button>
+      <div style="display:flex; justify-content:space-between; gap:6px; margin-top:6px;">
+        <button class="btn btn-secondary" style="flex:1; padding:8px; font-size:0.75rem;" id="renameVehicleBtn">✏️ Edit Active</button>
+        <button class="btn btn-secondary" style="color:var(--danger); padding:8px; font-size:0.75rem;" id="delVehicleBtn">🗑️ Delete</button>
       </div>
     </aside>
 
     <!-- Main Content Area -->
     <main class="main-content">
       
-      <!-- Header with System Date & Sync Widget -->
+      <!-- Header -->
       <header class="header">
         <div class="brand">
           <div class="brand-icon" id="brandIcon">🏍️</div>
           <div>
             <div class="brand-title" id="displayActiveName">MotoTrack Pro</div>
             <div class="header-badges">
-              <span class="status-badge date-badge" id="systemDateDisplay">📅 Auto-syncing date...</span>
+              <span class="status-badge date-badge" id="systemDateDisplay">📅 Loading date...</span>
               <span class="status-badge offline" id="cloudStatus">● Local Storage</span>
             </div>
           </div>
@@ -289,7 +367,7 @@
       </header>
 
       <!-- Stats Grid -->
-      <section class="card" style="padding: 14px;">
+      <section class="card" style="padding: 12px;">
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-label" id="avgMetricLabel">Average Mileage</div>
@@ -311,19 +389,18 @@
         <div class="card-header">
           <div class="card-title">
             <span>⚡ Real-Time Mileage Quick Check</span>
-            <span style="font-size:0.72rem; font-weight:500; color:var(--text-muted);">(No refill needed • Won't record to logs)</span>
           </div>
         </div>
 
         <div class="estimator-box">
           <div class="form-grid">
             <div class="form-group">
-              <label for="checkDate">Check Date (Auto-Synced)</label>
+              <label for="checkDate">Check Date</label>
               <input type="date" id="checkDate" class="input-box" />
             </div>
             <div class="form-group">
               <label for="checkOdo">Current Odometer Reading (KM)</label>
-              <input type="number" step="0.1" id="checkOdo" class="input-box" placeholder="e.g. Current Odometer" />
+              <input type="number" inputmode="decimal" step="0.1" id="checkOdo" class="input-box" placeholder="e.g. Current Odometer" />
             </div>
             <div class="form-group">
               <label for="tankGaugeLevel" id="gaugeLabel">Fuel Gauge Level (Estimate)</label>
@@ -336,7 +413,7 @@
               </select>
             </div>
             <div class="form-group" style="justify-content: flex-end;">
-              <button type="button" class="btn btn-secondary" style="height: 42px; border-color: rgba(59,130,246,0.3); color:#93c5fd;" id="calcInstantBtn">
+              <button type="button" class="btn btn-secondary" style="height: 44px; border-color: rgba(59,130,246,0.3); color:#93c5fd;" id="calcInstantBtn">
                 ⚡ Calculate Live Estimate
               </button>
             </div>
@@ -374,14 +451,14 @@
         <div class="alert-banner" id="serviceBanner"></div>
       </section>
 
-      <!-- PUC Expiry Tracker with One-Click System Date Renewal -->
+      <!-- PUC Expiry Tracker -->
       <section class="card" id="pucSection">
         <div class="card-header">
-          <div class="card-title"><span>🛡️ PUC (Pollution Certificate) Expiry</span></div>
+          <div class="card-title"><span>🛡️ PUC Certificate Expiry</span></div>
           <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.72rem;" id="puc6mBtn">+6 Months</button>
-            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.72rem;" id="puc1yBtn">+1 Year</button>
-            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" id="pucConfigBtn">📅 Pick Date</button>
+            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.72rem; min-height:36px;" id="puc6mBtn">+6 Mo</button>
+            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.72rem; min-height:36px;" id="puc1yBtn">+1 Yr</button>
+            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.72rem; min-height:36px;" id="pucConfigBtn">📅 Pick Date</button>
           </div>
         </div>
         <div class="progress-labels">
@@ -391,7 +468,7 @@
         <div class="alert-banner" id="pucBanner"></div>
       </section>
 
-      <!-- Refill Form with Synced System Date -->
+      <!-- Refill Form -->
       <section class="card">
         <div class="card-header">
           <div class="card-title"><span id="formTitle">⚡ Log Fuel Entry</span></div>
@@ -399,20 +476,20 @@
         </div>
         <form id="entryForm" class="form-grid">
           <div class="form-group">
-            <label for="fDate">Refill Date (Auto-Synced)</label>
+            <label for="fDate">Refill Date</label>
             <input type="date" id="fDate" class="input-box" required />
           </div>
           <div class="form-group">
-            <label for="fOdo">Odometer (KM)</label>
-            <input type="number" step="0.1" id="fOdo" class="input-box" placeholder="e.g. 15420" required />
+            <label for="fOdo" id="fOdoLabel">Odometer (KM)</label>
+            <input type="number" inputmode="decimal" step="0.1" id="fOdo" class="input-box" placeholder="e.g. 15420" required />
           </div>
           <div class="form-group">
             <label for="fQty" id="fQtyLabel">Fuel Quantity (Litres)</label>
-            <input type="number" step="0.01" id="fQty" class="input-box" placeholder="e.g. 4.5" required />
+            <input type="number" inputmode="decimal" step="0.01" id="fQty" class="input-box" placeholder="e.g. 4.5" required />
           </div>
           <div class="form-group">
             <label for="fAmount">Amount Paid (₹)</label>
-            <input type="number" step="0.01" id="fAmount" class="input-box" placeholder="e.g. 450" required />
+            <input type="number" inputmode="decimal" step="0.01" id="fAmount" class="input-box" placeholder="e.g. 450" required />
           </div>
           <button type="submit" class="btn-submit form-group full" id="submitBtn">+ Save Fuel Entry</button>
         </form>
@@ -469,7 +546,7 @@
   <!-- Add Vehicle Modal -->
   <div class="modal-overlay" id="vehicleModal">
     <div class="modal">
-      <h3 style="color:#fff;">+ Add New Vehicle</h3>
+      <h3 style="color:#fff; font-size:1.1rem;">+ Add New Vehicle</h3>
       <div class="form-group">
         <label for="modalName">Vehicle Name / Number</label>
         <input type="text" id="modalName" class="input-box" placeholder="e.g. Honda Activa, Swift VXi" required />
@@ -490,27 +567,25 @@
       </div>
       <div class="form-group">
         <label for="modalTankCapacity" id="modalTankLabel">Approx Tank / Battery Capacity</label>
-        <input type="number" step="0.5" id="modalTankCapacity" class="input-box" value="10" placeholder="e.g. 10 Litres or 3 kWh" required />
+        <input type="number" inputmode="decimal" step="0.5" id="modalTankCapacity" class="input-box" value="10" placeholder="e.g. 10 Litres or 3.5 kWh" required />
       </div>
       <div class="form-group">
-        <label for="modalOdo">Current Odometer (KM)</label>
-        <input type="number" step="0.1" id="modalOdo" class="input-box" value="0" placeholder="e.g. 12500" required />
+        <label for="modalOdo">Current Existing Odometer (KM)</label>
+        <input type="number" inputmode="decimal" step="0.1" id="modalOdo" class="input-box" placeholder="Enter starting odometer reading (e.g. 14200)" required />
       </div>
       <div class="form-group" id="modalPucGroup">
         <label for="modalPucDate">PUC Expiry Date (Optional)</label>
         <input type="date" id="modalPucDate" class="input-box" />
       </div>
-      <div style="display:flex; justify-content:flex-end; gap:8px;">
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
         <button type="button" class="btn btn-secondary" id="modalCloseBtn">Cancel</button>
-        <button type="button" class="btn btn-submit" style="padding:8px 16px;" id="modalSaveBtn">Save</button>
+        <button type="button" class="btn btn-submit" style="padding:8px 16px;" id="modalSaveBtn">Save Vehicle</button>
       </div>
     </div>
   </div>
 
   <script>
-    // =========================================================================
-    // SYSTEM DATE SYNC UTILITY (Pure Local System Date)
-    // =========================================================================
+    // SYSTEM DATE UTILITY
     function getSystemLocalDateStr(offsetMonths = 0, offsetYears = 0) {
       const now = new Date();
       if (offsetMonths !== 0) now.setMonth(now.getMonth() + offsetMonths);
@@ -524,24 +599,20 @@
 
     function syncAllDateInputsToSystem() {
       const todayISO = getSystemLocalDateStr();
-      
-      // Update form inputs if they aren't manually altered
       const fDate = document.getElementById("fDate");
       const checkDate = document.getElementById("checkDate");
-      if (fDate) fDate.value = todayISO;
+      if (fDate && !fDate.value) fDate.value = todayISO;
       if (checkDate) checkDate.value = todayISO;
 
-      // Update Header Widget
       const systemDateDisplay = document.getElementById("systemDateDisplay");
       if (systemDateDisplay) {
         const readable = new Date().toLocaleDateString('default', {
-          weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
+          weekday: 'short', day: 'numeric', month: 'short'
         });
-        systemDateDisplay.textContent = `📅 Today: ${readable}`;
+        systemDateDisplay.textContent = `📅 ${readable}`;
       }
     }
 
-    // Auto-refresh dates when the user returns to the tab or app
     document.addEventListener("visibilitychange", () => {
       if (!document.hidden) {
         syncAllDateInputsToSystem();
@@ -549,9 +620,7 @@
       }
     });
 
-    // =========================================================================
-    // 1. FIREBASE CONFIG (Optional - paste to sync across devices)
-    // =========================================================================
+    // 1. FIREBASE CONFIG
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -578,10 +647,8 @@
       }
     }
 
-    // =========================================================================
-    // 2. DATA ARCHITECTURE & STATE
-    // =========================================================================
-    const STORAGE_KEY = "mototrack_v7_store";
+    // 2. STATE & ARCHITECTURE
+    const STORAGE_KEY = "mototrack_v9_store";
     const defaultData = {
       activeId: "v_1",
       vehicles: [
@@ -634,11 +701,12 @@
       });
     }
 
-    // =========================================================================
     // 3. UI REFERENCES
-    // =========================================================================
     const vehicleSidebarList = document.getElementById("vehicleSidebarList");
     const displayActiveName = document.getElementById("displayActiveName");
+    const mobileActiveName = document.getElementById("mobileActiveName");
+    const sidebarDrawer = document.getElementById("sidebarDrawer");
+    const toggleDrawerBtn = document.getElementById("toggleDrawerBtn");
     const addVehicleBtn = document.getElementById("addVehicleBtn");
     const renameVehicleBtn = document.getElementById("renameVehicleBtn");
     const delVehicleBtn = document.getElementById("delVehicleBtn");
@@ -685,6 +753,7 @@
     const entryForm = document.getElementById("entryForm");
     const fDate = document.getElementById("fDate");
     const fOdo = document.getElementById("fOdo");
+    const fOdoLabel = document.getElementById("fOdoLabel");
     const fQty = document.getElementById("fQty");
     const fQtyLabel = document.getElementById("fQtyLabel");
     const fAmount = document.getElementById("fAmount");
@@ -714,6 +783,12 @@
     const modalCloseBtn = document.getElementById("modalCloseBtn");
     const modalSaveBtn = document.getElementById("modalSaveBtn");
 
+    // Android Drawer Toggle
+    toggleDrawerBtn.addEventListener("click", () => {
+      sidebarDrawer.classList.toggle("open");
+      toggleDrawerBtn.textContent = sidebarDrawer.classList.contains("open") ? "✕ Close Garage" : "📂 Switch Vehicle";
+    });
+
     modalType.addEventListener("change", () => {
       const isP = modalType.value === "petrol";
       modalPucGroup.style.display = isP ? "flex" : "none";
@@ -721,9 +796,7 @@
       modalTankCapacity.value = isP ? "10" : "3.5";
     });
 
-    // =========================================================================
     // 4. CORE RENDER ENGINE
-    // =========================================================================
     function render() {
       const active = getActive();
       const isEV = active.type === "ev";
@@ -731,8 +804,9 @@
       const logs = active.logs || [];
 
       displayActiveName.textContent = active.name;
+      mobileActiveName.textContent = `${active.name} (${active.type === 'ev' ? 'EV' : 'Petrol'})`;
 
-      // 1. Sidebar List
+      // Render Sidebar Vehicles
       vehicleSidebarList.innerHTML = "";
       state.vehicles.forEach(v => {
         const item = document.createElement("div");
@@ -742,7 +816,7 @@
 
         const icon = v.wheels === "4w" ? (vIsEV ? "🚗⚡" : "🚗⛽") : (vIsEV ? "🛵⚡" : "🏍️⛽");
         const typeStr = vIsEV ? "Electric (EV)" : "Petrol / Diesel";
-        const wheelStr = v.wheels === "4w" ? "4 Wheeler" : "2 Wheeler";
+        const wheelStr = v.wheels === "4w" ? "4W" : "2W";
 
         item.innerHTML = `
           <div class="v-item-top">
@@ -757,12 +831,14 @@
 
         item.addEventListener("click", () => {
           state.activeId = v.id;
+          sidebarDrawer.classList.remove("open");
+          toggleDrawerBtn.textContent = "📂 Switch Vehicle";
           saveState();
         });
         vehicleSidebarList.appendChild(item);
       });
 
-      // 2. Units & Theme
+      // Dynamic Theme & Units
       const effUnit = isEV ? "km/kWh" : "km/L";
       const volUnit = isEV ? "kWh" : "L";
 
@@ -775,7 +851,7 @@
       statAvgUnit.textContent = effUnit;
       statLastUnit.textContent = effUnit;
 
-      gaugeLabel.textContent = isEV ? "Battery Level Consumed (Estimate)" : "Fuel Gauge Level (Estimate)";
+      gaugeLabel.textContent = isEV ? "Battery Consumed (Estimate)" : "Fuel Gauge Level (Estimate)";
       estBurnedLabel.textContent = isEV ? "Est. Energy Used" : "Est. Fuel Burned";
       estMileageLabel.textContent = isEV ? "Estimated Efficiency" : "Estimated Live Mileage";
 
@@ -790,7 +866,7 @@
       thLogEff.textContent = effUnit;
       logCounter.textContent = `${logs.length} Records`;
 
-      // 3. PUC Tracker
+      // PUC Tracker
       if (isEV) {
         pucSection.style.display = "none";
       } else {
@@ -798,7 +874,7 @@
         renderPucStatus(active.pucExpiryDate);
       }
 
-      // 4. Metrics & Computations
+      // Calculations
       let totalDist = 0, totalQty = 0, totalAmount = 0, lastEff = 0;
       const monthlyBuckets = {};
 
@@ -861,9 +937,12 @@
         statCost.innerHTML = `₹0.00 <small>/km</small>`;
       }
 
-      // 5. Service / Oil Progress
+      // Maintenance Status
       const latestOdo = logs.length > 0 ? logs[logs.length - 1].odometer : 0;
-      const serviceCfg = active.serviceConfig || { lastServiceKm: 0, intervalKm: isEV ? 5000 : 2500 };
+      fOdo.placeholder = `Last: ${latestOdo} km`;
+      fOdoLabel.innerHTML = `Odometer (KM) <span style="font-size:0.68rem; color:#93c5fd;">(Last: ${latestOdo} km)</span>`;
+
+      const serviceCfg = active.serviceConfig || { lastServiceKm: latestOdo, intervalKm: isEV ? 5000 : 2500 };
       const runSinceService = latestOdo - serviceCfg.lastServiceKm;
       const kmRemaining = serviceCfg.intervalKm - runSinceService;
       const percent = Math.min(Math.max((runSinceService / serviceCfg.intervalKm) * 100, 0), 100);
@@ -885,7 +964,7 @@
         serviceBanner.className = "alert-banner";
       }
 
-      // 6. Monthly Breakdown
+      // Monthly Table
       monthlyTableBody.innerHTML = "";
       const mKeys = Object.keys(monthlyBuckets).sort().reverse();
       mKeys.forEach(k => {
@@ -906,8 +985,8 @@
 
     function renderPucStatus(expiryDateStr) {
       if (!expiryDateStr) {
-        pucExpiryLabel.textContent = "Expiry Date: Not Configured";
-        pucDaysRemaining.textContent = "No Expiry Set";
+        pucExpiryLabel.textContent = "Expiry: Not Set";
+        pucDaysRemaining.textContent = "-";
         pucDaysRemaining.style.color = "var(--text-muted)";
         pucBanner.className = "alert-banner";
         return;
@@ -921,28 +1000,26 @@
       const diffTime = expDate - today;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-      pucExpiryLabel.textContent = `Expiry Date: ${expiryDateStr}`;
+      pucExpiryLabel.textContent = `Expiry: ${expiryDateStr}`;
 
       if (diffDays < 0) {
-        pucDaysRemaining.textContent = `Expired ${Math.abs(diffDays)} day(s) ago!`;
+        pucDaysRemaining.textContent = `Expired ${Math.abs(diffDays)}d ago!`;
         pucDaysRemaining.style.color = "var(--danger)";
         pucBanner.className = "alert-banner danger";
-        pucBanner.textContent = `⚠️ PUC Certificate EXPIRED! Renew immediately to avoid traffic fines.`;
+        pucBanner.textContent = `⚠️ PUC Certificate EXPIRED! Renew immediately.`;
       } else if (diffDays <= 15) {
-        pucDaysRemaining.textContent = `${diffDays} day(s) remaining`;
+        pucDaysRemaining.textContent = `${diffDays} days left`;
         pucDaysRemaining.style.color = "var(--warning)";
         pucBanner.className = "alert-banner warn";
-        pucBanner.textContent = `🔔 PUC Expiry Approaching: Only ${diffDays} day(s) left.`;
+        pucBanner.textContent = `🔔 PUC Approaching: ${diffDays} days remaining.`;
       } else {
-        pucDaysRemaining.textContent = `${diffDays} days remaining (Valid)`;
+        pucDaysRemaining.textContent = `${diffDays} days (Valid)`;
         pucDaysRemaining.style.color = "var(--accent-green)";
         pucBanner.className = "alert-banner";
       }
     }
 
-    // =========================================================================
     // 5. LIVE ESTIMATOR LOGIC
-    // =========================================================================
     calcInstantBtn.addEventListener("click", () => {
       const active = getActive();
       const logs = active.logs || [];
@@ -957,7 +1034,7 @@
       }
 
       if (logs.length === 0) {
-        alert("No baseline refuel log found. Please add at least 1 refill record first.");
+        alert("No baseline refuel log found. Add at least 1 refill record first.");
         return;
       }
 
@@ -987,13 +1064,13 @@
       if (gaugeVal === "auto") {
         estFuelUsed = tripDistance / avgMlg;
         calculatedMlg = avgMlg;
-        estNote.textContent = `ℹ️ Auto mode estimates ${estFuelUsed.toFixed(2)} ${volUnit} consumed based on your vehicle's historical average of ${avgMlg.toFixed(1)} ${effUnit}.`;
+        estNote.textContent = `ℹ️ Auto estimates ${estFuelUsed.toFixed(2)} ${volUnit} used based on past ${avgMlg.toFixed(1)} ${effUnit}.`;
       } else {
         let fraction = parseFloat(gaugeVal);
         if (gaugeVal === "reserve") fraction = 0.80;
         estFuelUsed = tankCapacity * fraction;
         calculatedMlg = estFuelUsed > 0 ? (tripDistance / estFuelUsed) : 0;
-        estNote.textContent = `ℹ️ Based on ~${(fraction * 100).toFixed(0)}% usable capacity consumed (${estFuelUsed.toFixed(1)} ${volUnit} out of ${tankCapacity} ${volUnit}).`;
+        estNote.textContent = `ℹ️ Based on ~${(fraction * 100).toFixed(0)}% usable capacity used.`;
       }
 
       estTrip.textContent = `${tripDistance.toFixed(1)} km`;
@@ -1004,16 +1081,15 @@
       estNote.style.display = "block";
     });
 
-    // =========================================================================
     // 6. EVENT HANDLERS
-    // =========================================================================
     addVehicleBtn.addEventListener("click", () => {
       modalName.value = "";
-      modalOdo.value = "0";
+      modalOdo.value = "";
       modalPucDate.value = "";
-      modalTankCapacity.value = "10";
+      modalTankCapacity.value = modalType.value === "petrol" ? "10" : "3.5";
       modalPucGroup.style.display = modalType.value === "petrol" ? "flex" : "none";
       vehicleModal.classList.add("open");
+      modalName.focus();
     });
 
     modalCloseBtn.addEventListener("click", () => vehicleModal.classList.remove("open"));
@@ -1022,13 +1098,25 @@
       const name = modalName.value.trim();
       const type = modalType.value;
       const wheels = modalWheels.value;
-      const initialOdo = parseFloat(modalOdo.value) || 0;
+      const rawOdo = modalOdo.value.trim();
+      const initialOdo = rawOdo === "" ? 0 : parseFloat(rawOdo);
       const tankCapacity = parseFloat(modalTankCapacity.value) || (type === "ev" ? 3.5 : 10);
       const pucDate = type === "petrol" ? modalPucDate.value : "";
 
       if (!name) return alert("Vehicle name is required.");
+      if (isNaN(initialOdo) || initialOdo < 0) {
+        return alert("Please enter a valid starting odometer reading.");
+      }
 
       const newId = "v_" + Date.now();
+      const baselineEntry = {
+        date: getSystemLocalDateStr(),
+        odometer: initialOdo,
+        qty: 0,
+        amount: 0,
+        isBaseline: true
+      };
+
       state.vehicles.push({
         id: newId,
         name: name,
@@ -1036,14 +1124,17 @@
         wheels: wheels,
         tankCapacity: tankCapacity,
         pucExpiryDate: pucDate,
-        serviceConfig: { lastServiceKm: initialOdo, intervalKm: type === "ev" ? 5000 : 2500 },
-        logs: [
-          { date: getSystemLocalDateStr(), odometer: initialOdo, qty: 0, amount: 0, isBaseline: true }
-        ]
+        serviceConfig: { 
+          lastServiceKm: initialOdo, 
+          intervalKm: type === "ev" ? 5000 : 2500 
+        },
+        logs: [baselineEntry]
       });
 
       state.activeId = newId;
       vehicleModal.classList.remove("open");
+      sidebarDrawer.classList.remove("open");
+      toggleDrawerBtn.textContent = "📂 Switch Vehicle";
       saveState();
     });
 
@@ -1053,7 +1144,6 @@
       if (!newName || !newName.trim()) return;
 
       const newCapacity = prompt(`Update Tank/Battery Capacity for ${newName}:`, active.tankCapacity || 10);
-
       active.name = newName.trim();
       if (newCapacity) active.tankCapacity = parseFloat(newCapacity) || 10;
       saveState();
@@ -1069,7 +1159,6 @@
       }
     });
 
-    // Manual PUC Date Picker
     pucConfigBtn.addEventListener("click", () => {
       const active = getActive();
       const newDate = prompt("Enter new PUC Expiry Date (YYYY-MM-DD):", active.pucExpiryDate || getSystemLocalDateStr(6));
@@ -1078,7 +1167,6 @@
       saveState();
     });
 
-    // Quick System Date-Linked PUC Renewals
     puc6mBtn.addEventListener("click", () => {
       const active = getActive();
       const targetDate = getSystemLocalDateStr(6);
@@ -1100,10 +1188,18 @@
     entryForm.addEventListener("submit", e => {
       e.preventDefault();
       const active = getActive();
+      const enteredOdo = parseFloat(fOdo.value);
+      const latestOdo = active.logs.length > 0 ? active.logs[active.logs.length - 1].odometer : 0;
+
+      if (enteredOdo < latestOdo) {
+        if (!confirm(`Warning: Entered odometer (${enteredOdo} km) is lower than previous recorded odometer (${latestOdo} km). Proceed?`)) {
+          return;
+        }
+      }
 
       active.logs.push({
         date: fDate.value || getSystemLocalDateStr(),
-        odometer: parseFloat(fOdo.value),
+        odometer: enteredOdo,
         qty: parseFloat(fQty.value),
         amount: parseFloat(fAmount.value),
         isBaseline: false
@@ -1112,7 +1208,7 @@
       fOdo.value = "";
       fQty.value = "";
       fAmount.value = "";
-      fDate.value = getSystemLocalDateStr(); // Auto-reset back to current system date
+      fDate.value = getSystemLocalDateStr();
       saveState();
     });
 
@@ -1197,9 +1293,8 @@
       doc.save(`${active.name}_Report.pdf`);
     });
 
-    // Initial system date initialization & render
     syncAllDateInputsToSystem();
     render();
   </script>
 </body>
-</html>Q
+</html>
